@@ -1,5 +1,9 @@
 package com.fmsproject.pet_adoption.repository;
 
-public interface PetRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.fmsproject.pet_adoption.model.Pets;
+
+public interface PetRepository extends JpaRepository<Pets, Long>{
 
 }

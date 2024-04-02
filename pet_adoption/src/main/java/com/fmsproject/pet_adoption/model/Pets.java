@@ -35,6 +35,7 @@ public class Pets {
     
     @Lob
     private Blob photo;
+    
     private boolean isAdopted = false;
 
     @OneToOne(mappedBy = "pet", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
