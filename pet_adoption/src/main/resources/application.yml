@@ -9,14 +9,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
-    hibernate:
-        ddl-auto: update
-        format_sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect    
+        dialect: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
   servlet:
     multipart:
-    max-file-size: 10MB
-    max-request-size: 5MB
-    file-size-threshold: 2KB
+      max-file-size: 10MB
+      max-request-size: 5MB
+      file-size-threshold: 2KB

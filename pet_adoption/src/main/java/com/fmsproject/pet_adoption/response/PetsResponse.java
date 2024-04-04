@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
 
-
 @Data
 @NoArgsConstructor
 public class PetsResponse {
@@ -16,13 +15,17 @@ public class PetsResponse {
     private boolean isAdopted;
     private String photo;
 
-    public PetsResponse(Long id, String breed, String gender, int age, boolean isVaccinated, boolean isAdopted, byte[] photoBytes) {
+    public PetsResponse(Long id, String breed, String gender, int age, boolean isVaccinated, boolean isAdopted) {
         this.id = id;
         this.breed = breed;
         this.gender = gender;
         this.age = age;
         this.isVaccinated = isVaccinated;
         this.isAdopted = isAdopted;
+    }
+
+    public PetsResponse(Long id, String breed, String gender, int age, boolean isVaccinated, boolean isAdopted, byte[] photoBytes) {
+        this(id, breed, gender, age, isVaccinated, isAdopted);
         this.photo = photoBytes != null ? Base64.encodeBase64String(photoBytes) : null;
     }
 }

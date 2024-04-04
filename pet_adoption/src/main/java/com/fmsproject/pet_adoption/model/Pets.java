@@ -2,6 +2,8 @@ package com.fmsproject.pet_adoption.model;
 
 import java.sql.Blob;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +25,7 @@ import lombok.Setter;
 @NoArgsConstructor // Adding no-args constructor
 @AllArgsConstructor // Adding all-args constructor
 public class Pets {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,12 +34,16 @@ public class Pets {
     private String gender;
     private int age;
     private boolean isVaccinated;
-    
+
     @Lob
-    private Blob photo;
-    
+    @Column(length = 1048576)
+    private byte[] photo;
+
+
     private boolean isAdopted = false;
 
     @OneToOne(mappedBy = "pet", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private AdoptedPets adoption;
+
+    
 }
