@@ -1,150 +1,7 @@
-// // package com.fmsproject.pet_adoption.controller;
-
-// // import com.fmsproject.pet_adoption.model.Pets;
-// // import com.fmsproject.pet_adoption.response.PetsResponse;
-// // import com.fmsproject.pet_adoption.service.IPetService;
-// // import org.springframework.beans.factory.annotation.Autowired;
-// // import org.springframework.http.HttpStatus;
-// // import org.springframework.http.ResponseEntity;
-// // import org.springframework.web.bind.annotation.*;
-// // import org.springframework.web.multipart.MultipartFile;
-
-// // import java.util.List;
-// // import java.util.stream.Collectors;
-
-// // @RestController
-// // @RequestMapping("/api/pets")
-// // public class PetController {
-
-// //     @Autowired
-// //     private IPetService petsService;
-
-// //     @PostMapping
-// //     public ResponseEntity<Pets> addPet(@ModelAttribute Pets pet, @RequestParam("photo") MultipartFile photo) {
-// //         Pets savedPet = petsService.addPet(pet, photo);
-// //         return new ResponseEntity<>(savedPet, HttpStatus.CREATED);
-// //     }
-
-// //     @GetMapping("/{id}")
-// //     public ResponseEntity<PetsResponse> getPetById(@PathVariable Long id) {
-// //         Pets pet = petsService.getPetById(id);
-// //         PetsResponse petResponse = convertToResponse(pet);
-// //         return ResponseEntity.ok(petResponse);
-// //     }
-
-// //     @GetMapping
-// //     public ResponseEntity<List<PetsResponse>> getAllPets() {
-// //         List<Pets> pets = petsService.getAllPets();
-// //         List<PetsResponse> petResponses = pets.stream()
-// //                 .map(this::convertToResponse)
-// //                 .collect(Collectors.toList());
-// //         return ResponseEntity.ok(petResponses);
-// //     }
-
-// //     @PutMapping("/{id}")
-// //     public ResponseEntity<Pets> updatePet(@PathVariable Long id, @RequestBody Pets pet) {
-// //         Pets updatedPet = petsService.updatePet(id, pet);
-// //         return ResponseEntity.ok(updatedPet);
-// //     }
-
-// //     @DeleteMapping("/{id}")
-// //     public ResponseEntity<Void> deletePet(@PathVariable Long id) {
-// //         petsService.deletePet(id);
-// //         return ResponseEntity.noContent().build();
-// //     }
-
-// //     private PetsResponse convertToResponse(Pets pet) {
-// //         return new PetsResponse(
-// //                 pet.getId(),
-// //                 pet.getBreed(),
-// //                 pet.getGender(),
-// //                 pet.getAge(),
-// //                 pet.isVaccinated(),
-// //                 pet.isAdopted());
-// //     }
-// // }
-
-// // PetController.java
-// package com.fmsproject.pet_adoption.controller;
-
-// import com.fmsproject.pet_adoption.model.Pets;
-// import com.fmsproject.pet_adoption.response.PetsResponse;
-// import com.fmsproject.pet_adoption.service.IPetService;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.http.HttpStatus;
-// import org.springframework.http.ResponseEntity;
-// import org.springframework.web.bind.annotation.*;
-// import org.springframework.web.multipart.MultipartFile;
-
-// import java.io.IOException;
-// import java.util.List;
-// import java.util.stream.Collectors;
-
-// @RestController
-// @RequestMapping("/api/pets")
-// public class PetController {
-
-//     @Autowired
-//     private IPetService petsService;
-
-//     @PostMapping
-//     public ResponseEntity<Pets> addPet(@ModelAttribute Pets pet, @RequestParam("photo") MultipartFile photo) {
-//         // Handle file upload and set photo data in the pet object
-//         try {
-//             pet.setPhoto(photo.getBytes());
-//         } catch (IOException e) {
-//             throw new RuntimeException("Error uploading pet photo", e);
-//         }
-        
-//         // Save the pet
-//         Pets savedPet = petsService.addPet(pet);
-        
-//         return new ResponseEntity<>(savedPet, HttpStatus.CREATED);
-//     }
-
-//     @GetMapping("/{id}")
-//     public ResponseEntity<PetsResponse> getPetById(@PathVariable Long id) {
-//         Pets pet = petsService.getPetById(id);
-//         PetsResponse petResponse = convertToResponse(pet);
-//         return ResponseEntity.ok(petResponse);
-//     }
-
-//     @GetMapping
-//     public ResponseEntity<List<PetsResponse>> getAllPets() {
-//         List<Pets> pets = petsService.getAllPets();
-//         List<PetsResponse> petResponses = pets.stream()
-//                 .map(this::convertToResponse)
-//                 .collect(Collectors.toList());
-//         return ResponseEntity.ok(petResponses);
-//     }
-
-//     @PutMapping("/{id}")
-//     public ResponseEntity<Pets> updatePet(@PathVariable Long id, @RequestBody Pets pet) {
-//         Pets updatedPet = petsService.updatePet(id, pet);
-//         return ResponseEntity.ok(updatedPet);
-//     }
-
-//     @DeleteMapping("/{id}")
-//     public ResponseEntity<Void> deletePet(@PathVariable Long id) {
-//         petsService.deletePet(id);
-//         return ResponseEntity.noContent().build();
-//     }
-
-//     private PetsResponse convertToResponse(Pets pet) {
-//         return new PetsResponse(
-//                 pet.getId(),
-//                 pet.getBreed(),
-//                 pet.getGender(),
-//                 pet.getAge(),
-//                 pet.isVaccinated(),
-//                 pet.isAdopted(),
-//                 pet.getPhoto());
-//     }
-// }
-
 package com.fmsproject.pet_adoption.controller;
 
 import com.fmsproject.pet_adoption.model.Pets;
+import com.fmsproject.pet_adoption.response.PetsRequest;
 import com.fmsproject.pet_adoption.response.PetsResponse;
 import com.fmsproject.pet_adoption.service.IPetService;
 
@@ -161,21 +18,35 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/pets")
+@CrossOrigin(origins = "http://localhost:5173")
 public class PetController {
 
     @Autowired
     private IPetService petsService;
 
+    // @PostMapping("/add")
+    // public ResponseEntity<PetsResponse> addPet(
+    //         @RequestParam("breed") String breed,
+    //         @RequestParam("gender") String gender,
+    //         @RequestParam("age") int age,
+    //         @RequestParam("isVaccinated") boolean isVaccinated,
+    //         @RequestParam("isAdopted") boolean isAdopted,
+    //         @RequestParam("photo") MultipartFile photo) {
+    //     try {
+    //         Pets savedPet = petsService.addPet(breed, gender, age, isVaccinated, isAdopted, photo);
+    //         PetsResponse petResponse = convertToResponse(savedPet);
+    //         return ResponseEntity.ok(petResponse);
+    //     } catch (IOException e) {
+    //         // Handle file upload error
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    //     }
+    // }
+
     @PostMapping("/add")
-    public ResponseEntity<PetsResponse> addPet(
-            @RequestParam("breed") String breed,
-            @RequestParam("gender") String gender,
-            @RequestParam("age") int age,
-            @RequestParam("isVaccinated") boolean isVaccinated,
-            @RequestParam("isAdopted") boolean isAdopted,
-            @RequestParam("photo") MultipartFile photo) {
+    public ResponseEntity<PetsResponse> addPet(@ModelAttribute PetsRequest request) {
         try {
-            Pets savedPet = petsService.addPet(breed, gender, age, isVaccinated, isAdopted, photo);
+            Pets savedPet = petsService.addPet(request.getBreed(), request.getGender(), request.getAge(),
+                    request.isVaccinated(), request.isAdopted(), request.getPhoto());
             PetsResponse petResponse = convertToResponse(savedPet);
             return ResponseEntity.ok(petResponse);
         } catch (IOException e) {
@@ -225,8 +96,34 @@ public class PetController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/breed/{breed}")
+    public ResponseEntity<PetsResponse> getPetByBreed(@PathVariable String breed) {
+        Pets pet = petsService.getPetByBreed(breed);
+        PetsResponse petResponse = convertToResponse(pet);
+        return ResponseEntity.ok(petResponse);
+    }
+
+    @GetMapping("/breeds")
+    public ResponseEntity<List<String>> getAllBreeds() {
+        List<String> breeds = petsService.getAllBreeds();
+        return ResponseEntity.ok(breeds);
+    }
+
+    // private PetsResponse convertToResponse(Pets pet) {
+    //     // Implement conversion logic from Pets to PetsResponse
+    //     PetsResponse response = new PetsResponse();
+    //     response.setId(pet.getId());
+    //     response.setBreed(pet.getBreed());
+    //     response.setGender(pet.getGender());
+    //     response.setAge(pet.getAge());
+    //     response.setVaccinated(pet.isVaccinated());
+    //     response.setAdopted(pet.isAdopted());
+    //     // Assuming photo is stored as a Base64 string
+    //     response.setPhoto(Base64.encodeBase64String(pet.getPhoto()));
+    //     return response;
+    // }
+
     private PetsResponse convertToResponse(Pets pet) {
-        // Implement conversion logic from Pets to PetsResponse
         PetsResponse response = new PetsResponse();
         response.setId(pet.getId());
         response.setBreed(pet.getBreed());
@@ -234,9 +131,7 @@ public class PetController {
         response.setAge(pet.getAge());
         response.setVaccinated(pet.isVaccinated());
         response.setAdopted(pet.isAdopted());
-        // Assuming photo is stored as a Base64 string
         response.setPhoto(Base64.encodeBase64String(pet.getPhoto()));
         return response;
     }
 }
-

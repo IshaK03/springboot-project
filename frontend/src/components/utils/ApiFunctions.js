@@ -1,28 +1,3 @@
-// import axios from "axios";
-
-// export const api = axios.create({
-//     baseURL: "http://localhost:9192"
-// })
-
-// export async function addPet(photo, breed, age, gender, isVaccinated, isAdopted){
-//     const formData = new FormData()
-//     formData.append("photo", photo)
-//     formData.append("breed", breed)
-//     formData.append("age", age)
-//     formData.append("gender", gender)
-//     formData.append("isVaccinated", isVaccinated)
-//     formData.append("isAdopted", isAdopted)
-
-//     const response = await api.post("/api/pets/add", formData)
-//     if(response.status == 201){
-//         return true
-//     }else{
-//         return false
-//     }
-// }
-
-// // export async function getAllPets()
-
 import axios from "axios";
 
 // Create an instance of axios with the base URL of your backend server
@@ -72,6 +47,26 @@ export async function getPetById(id) {
     } catch (error) {
         console.error(`Error getting pet with ID ${id}:`, error);
         return null; // Return null if error occurs
+    }
+}
+
+export async function getPetsByBreed(breed) {
+    try {
+        const response = await api.get(`/api/pets/byBreed/${breed}`);
+        return response.data; // Array of pets with the specified breed
+    } catch (error) {
+        console.error(`Error getting pets with breed ${breed}:`, error);
+        return []; // Return empty array if error occurs
+    }
+}
+
+export async function getAllBreeds() {
+    try {
+        const response = await api.get("/api/pets/breeds");
+        return response.data; // Array of all breeds
+    } catch (error) {
+        console.error("Error getting all breeds:", error);
+        return []; // Return empty array if error occurs
     }
 }
 

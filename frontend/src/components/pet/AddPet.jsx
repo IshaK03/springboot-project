@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import { addPet } from '../utils/ApiFunctions'
+import PetBreedSelector from '../common/PetBreedSelector'
+import '../../index.css';
+
 
 const AddPet = () => {
     const [newPet, setNewPet] = useState({
@@ -20,7 +23,7 @@ const AddPet = () => {
         let value = e.target.value
         if(name == "age"){
             if(!isNaN(value)){
-                value.parseInt(value)
+                value = parseInt(value)
             }else{
                 value = ""
             }
@@ -30,14 +33,14 @@ const AddPet = () => {
 
     const handleImageChange = (e) => {
         const selectedImage = e.target.files[0]
-        setNewPet({...newPet, [photo]: selectedImage})
+        setNewPet({...newPet, ["photo"]: selectedImage})
         setImagePreview(URL.createObjectURL(selectedImage))
     }
 
     const handleSubmit = async(e) => {
         e.preventDefault()
         try{
-            const success = await addPet(newPet.photo, newPet.age, newPet.breed, newPet.gender, newPet.isAdopted, newPet.isVaccinated)
+            const success = await addPet(newPet.breed, newPet.gender, newPet.age, newPet.isVaccinated, newPet.isAdopted, newPet.photo)
             if(success !== undefined){
                 setSuccessMessage("A new pet was added to the database")
                 setNewPet({
@@ -66,9 +69,9 @@ const AddPet = () => {
                 <form onSubmit={handleSubmit}>
                     <div className='mb-3'>
                         <label htmlFor='breed' className='form-label'>
-                            Pet Breed
+                            Pet Breed (Specify Animal)
                         </label>
-                        <input 
+                        {/* <input 
                             className='form-control'
                             required
                             type='text'
@@ -76,30 +79,72 @@ const AddPet = () => {
                             name = "breed"
                             value = {newPet.breed}
                             onChange={handlePetInputChange}
-                        />
+                        /> */}
+                        <div>
+                            <PetBreedSelector
+                                handlePetInputChange={handlePetInputChange}
+                                newPet={newPet}
+                            />
+                        </div>
                     </div>
                     <div className='mb-3'>
                         <label htmlFor='age' className='form-label'>
-                            Pet Age
+                            Pet Age (in months)
                         </label>
+                        <input 
+                            className='form-control'
+                            required
+                            type='text'
+                            id = "age"
+                            name = "age"
+                            value = {newPet.age}
+                            onChange={handlePetInputChange}
+                        />
                         <div></div>
                     </div>
                     <div className='mb-3'>
                         <label htmlFor='gender' className='form-label'>
                             Pet Gender
                         </label>
+                        <input 
+                            className='form-control'
+                            required
+                            type='text'
+                            id = "gender"
+                            name = "gender"
+                            value = {newPet.gender}
+                            onChange={handlePetInputChange}
+                        />
                         <div></div>
                     </div>
                     <div className='mb-3'>
                         <label htmlFor='isVaccinated' className='form-label'>
                             Pet Vaccination Status
                         </label>
+                        <input 
+                            className='form-control'
+                            required
+                            type='text'
+                            id = "isVaccinated"
+                            name = "isVaccinated"
+                            value = {newPet.isVaccinated}
+                            onChange={handlePetInputChange}
+                        />
                         <div></div>
                     </div>
                     <div className='mb-3'>
                         <label htmlFor='isAdopted' className='form-label'>
                             Pet Adoption Status
                         </label>
+                        <input 
+                            className='form-control'
+                            required
+                            type='text'
+                            id = "isAdopted"
+                            name = "isAdopted"
+                            value = {newPet.isAdopted}
+                            onChange={handlePetInputChange}
+                        />
                         <div></div>
                     </div>
                     <div className='mb-3'>
@@ -123,7 +168,7 @@ const AddPet = () => {
                         )}
                     </div>
                     <div className='d-grid d-md-flex mt-2'>
-                        <button className='btn btn-outline-primary ml-5'>
+                        <button className='btn-pet btn-outline-primary ml-5 form-control '>
                             Save Pet
                         </button>
                     </div>

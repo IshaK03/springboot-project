@@ -42,5 +42,9 @@ public interface IPetService {
 
     void deletePet(Long id);
 
+    Pets getPetByBreed(String breed);
+
+    List<String> getAllBreeds();
+
     byte[] getPetPhotoByPetId(Long petId);
 }
