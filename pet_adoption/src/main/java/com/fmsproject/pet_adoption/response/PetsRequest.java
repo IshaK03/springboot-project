@@ -4,14 +4,23 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class PetsRequest {
 
+    private String animalType;
     private String breed;
     private String gender;
-    private int age;
-    private boolean isVaccinated;
-    private boolean isAdopted;
+    private Integer age;
+    private Integer isVaccinated;
+    private Integer isAdopted;
     private MultipartFile photo;
 
     // Getters and setters for all fields
+
+    public String getAnimalType() {
+        return animalType;
+    }
+
+    public void setAnimalType(String animalType) {
+        this.animalType = animalType;
+    }
 
     public String getBreed() {
         return breed;
@@ -33,23 +42,23 @@ public class PetsRequest {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
-    public boolean isVaccinated() {
+    public int getIsVaccinated() {
         return isVaccinated;
     }
 
-    public void setVaccinated(boolean vaccinated) {
+    public void setIsVaccinated(Integer vaccinated) {
         isVaccinated = vaccinated;
     }
 
-    public boolean isAdopted() {
+    public int getIsAdopted() {
         return isAdopted;
     }
 
-    public void setAdopted(boolean adopted) {
+    public void setIsAdopted(Integer adopted) {
         isAdopted = adopted;
     }
 

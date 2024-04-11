@@ -8,15 +8,17 @@ import org.apache.tomcat.util.codec.binary.Base64;
 @NoArgsConstructor
 public class PetsResponse {
     private Long id;
+    private String animalType;
     private String breed;
     private String gender;
-    private int age;
-    private boolean isVaccinated;
-    private boolean isAdopted;
+    private Integer age;
+    private Integer isVaccinated;
+    private Integer isAdopted;
     private String photo;
 
-    public PetsResponse(Long id, String breed, String gender, int age, boolean isVaccinated, boolean isAdopted) {
+    public PetsResponse(Long id, String animalType, String breed, String gender, Integer age, Integer isVaccinated, Integer isAdopted) {
         this.id = id;
+        this.animalType = animalType;
         this.breed = breed;
         this.gender = gender;
         this.age = age;
@@ -24,8 +26,8 @@ public class PetsResponse {
         this.isAdopted = isAdopted;
     }
 
-    public PetsResponse(Long id, String breed, String gender, int age, boolean isVaccinated, boolean isAdopted, byte[] photoBytes) {
-        this(id, breed, gender, age, isVaccinated, isAdopted);
+    public PetsResponse(Long id, String animalType, String breed, String gender, Integer age, Integer isVaccinated, Integer isAdopted, byte[] photoBytes) {
+        this(id, animalType, breed, gender, age, isVaccinated, isAdopted);
         this.photo = photoBytes != null ? Base64.encodeBase64String(photoBytes) : null;
     }
 }

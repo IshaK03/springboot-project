@@ -20,15 +20,17 @@ public class PetService implements IPetService {
 
     @Override
     @Transactional
-    public Pets addPet(String breed, String gender, int age, boolean isVaccinated, boolean isAdopted,
-            MultipartFile photo) throws IOException {
+    public Pets addPet(String animalType, String breed, String gender, Integer age, Integer isVaccinated, Integer isAdopted,
+                       MultipartFile photo) throws IOException {
         Pets pet = new Pets();
+        pet.setAnimalType(animalType);
         pet.setBreed(breed);
         pet.setGender(gender);
         pet.setAge(age);
-        pet.setVaccinated(isVaccinated);
-        pet.setAdopted(isAdopted);
+        pet.setIsVaccinated(isVaccinated);
+        pet.setIsAdopted(isAdopted);
         pet.setPhoto(photo.getBytes()); // Store photo as byte array
+        System.out.println("isVaccinated: " + isVaccinated + ", isAdopted: " + isAdopted);
 
         return petRepository.save(pet);
     }
@@ -40,29 +42,32 @@ public class PetService implements IPetService {
 
     @Override
     public Pets getPetById(Long id) {
-        Optional<Pets> optionalPet = petRepository.findById(id);
-        return optionalPet.orElseThrow(() -> new ResourceNotFoundException("Pet not found with ID: " + id));
+        return petRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Pet not found with ID: " + id));
     }
 
     @Override
     @Transactional
-    public Pets updatePet(Long id, String breed, String gender, Integer age, Boolean isVaccinated, Boolean isAdopted,
-            MultipartFile photo) throws IOException {
+    public Pets updatePet(Long id, String animalType, String breed, String gender, Integer age, Integer isVaccinated, Integer isAdopted,
+                          MultipartFile photo) throws IOException {
         Pets pet = getPetById(id);
+        if (animalType != null) {
+            pet.setAnimalType(animalType);
+        }
         if (breed != null) {
             pet.setBreed(breed);
         }
         if (gender != null) {
             pet.setGender(gender);
         }
-        if (age != null) {
+        if (age > 0) {
             pet.setAge(age);
         }
-        if (isVaccinated != null) {
-            pet.setVaccinated(isVaccinated);
+        if (isVaccinated >= 0 && isVaccinated <= 2) {
+            pet.setIsVaccinated(isVaccinated);
         }
-        if (isAdopted != null) {
-            pet.setAdopted(isAdopted);
+        if (isAdopted >= 0 && isAdopted <= 1) {
+            pet.setIsAdopted(isAdopted);
         }
         if (photo != null) {
             pet.setPhoto(photo.getBytes()); // Update photo if provided
@@ -77,6 +82,17 @@ public class PetService implements IPetService {
         } else {
             throw new ResourceNotFoundException("Pet not found with ID: " + id);
         }
+    }
+
+    @Override
+    public Pets getPetsByAnimalType(String animalType) {
+        return petRepository.findByAnimalType(animalType)
+                .orElseThrow(() -> new ResourceNotFoundException("Pet not found with breed: " + animalType));
+    }
+
+    @Override
+    public List<String> getAllAnimalTypes() {
+        return petRepository.findAllAnimalTypes();
     }
 
     @Override

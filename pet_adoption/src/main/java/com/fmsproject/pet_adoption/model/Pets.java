@@ -30,20 +30,20 @@ public class Pets {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String animalType; 
     private String breed;
     private String gender;
-    private int age;
-    private boolean isVaccinated;
+    private Integer age;
+    private Integer isVaccinated;
 
     @Lob
     @Column(length = 1048576)
     private byte[] photo;
 
 
-    private boolean isAdopted = false;
+    private Integer isAdopted;
 
     @OneToOne(mappedBy = "pet", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private AdoptedPets adoption;
-
     
 }

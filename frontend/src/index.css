@@ -1,6 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   min-height: 100vh;
   padding-bottom: 50px;
+  background-color: rgb(54, 49, 49) !important;
+  color: #fff !important;
 }
 .card {
   opacity: 0.9;
@@ -54,12 +60,12 @@ body {
 
   /* Hotel custom color */
  .btn-pet{
-  background-color: rgb(169, 77, 123);
-  color: #fff;
+  background-color: rgb(169, 77, 123) !important;
+  color: #fff !important;
   }
   .btn-pet:hover{
-  background-color: rgb(137, 127, 132);
-  color: #fff;
+  background-color: #fff !important; 
+  color: rgb(169, 77, 123) !important;
   transition: 0.7s;
   outline-color: transparent;
   outline-style:solid;

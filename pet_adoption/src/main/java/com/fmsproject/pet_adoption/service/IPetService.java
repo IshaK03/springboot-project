@@ -32,19 +32,23 @@ import java.util.List;
 
 public interface IPetService {
 
-    Pets addPet(String breed, String gender, int age, boolean isVaccinated, boolean isAdopted, MultipartFile photo) throws IOException;
+    Pets addPet(String animalType, String breed, String gender, Integer age, Integer isVaccinated, Integer isAdopted, MultipartFile photo) throws IOException;
 
     List<Pets> getAllPets();
 
     Pets getPetById(Long id);
 
-    Pets updatePet(Long id, String breed, String gender, Integer age, Boolean isVaccinated, Boolean isAdopted, MultipartFile photo) throws IOException;
+    Pets updatePet(Long id, String animalType, String breed, String gender, Integer age, Integer isVaccinated, Integer isAdopted, MultipartFile photo) throws IOException;
 
     void deletePet(Long id);
 
     Pets getPetByBreed(String breed);
 
     List<String> getAllBreeds();
+
+    Pets getPetsByAnimalType(String animalType);
+
+    List<String> getAllAnimalTypes();
 
     byte[] getPetPhotoByPetId(Long petId);
 }
