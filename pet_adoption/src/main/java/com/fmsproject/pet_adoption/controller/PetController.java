@@ -1,8 +1,12 @@
 package com.fmsproject.pet_adoption.controller;
 
+import com.fmsproject.pet_adoption.exception.PhotoRetrievalException;
+import com.fmsproject.pet_adoption.model.AdoptedPets;
 import com.fmsproject.pet_adoption.model.Pets;
+import com.fmsproject.pet_adoption.response.AdoptionResponse;
 import com.fmsproject.pet_adoption.response.PetsRequest;
 import com.fmsproject.pet_adoption.response.PetsResponse;
+import com.fmsproject.pet_adoption.service.AdoptionService;
 import com.fmsproject.pet_adoption.service.IPetService;
 
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -13,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,15 +29,17 @@ public class PetController {
 
     @Autowired
     private IPetService petsService;
+    private AdoptionService adoptionService;
 
     @PostMapping("/add")
     public ResponseEntity<PetsResponse> addPet(@ModelAttribute PetsRequest request) {
         try {
             // Log the received request to check if isVaccinated and isAdopted are correctly
             // received
-            System.out.println("Received isVaccinated: " + request.getIsVaccinated() + ", isAdopted: " + request.getIsAdopted());
+            System.out.println(
+                    "Received isVaccinated: " + request.getIsVaccinated() + ", isAdopted: " + request.getIsAdopted());
             System.out.println("Received PetsRequest: " + request);
-    
+
             Pets savedPet = petsService.addPet(request.getAnimalType(), request.getBreed(), request.getGender(),
                     request.getAge(),
                     request.getIsVaccinated(), request.getIsAdopted(), request.getPhoto());
@@ -42,7 +50,22 @@ public class PetController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    
+
+    @GetMapping("/all-pets")
+    public ResponseEntity<List<PetsResponse>> getAllPets() throws SQLException {
+        List<Pets> pets = petsService.getAllPets();
+        List<PetsResponse> petResponses = new ArrayList<>();
+        for (Pets pet : pets) {
+            byte[] photoBytes = petsService.getPetPhotoByPetId(pet.getId());
+            if (photoBytes != null && photoBytes.length > 0) {
+                String base64Photo = Base64.encodeBase64String(photoBytes);
+                PetsResponse petResponse = convertToResponse(pet);
+                petResponse.setPhoto(base64Photo);
+                petResponses.add(petResponse);
+            }
+        }
+        return ResponseEntity.ok(petResponses);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<PetsResponse> getPetById(@PathVariable Long id) {
@@ -51,13 +74,33 @@ public class PetController {
         return ResponseEntity.ok(petResponse);
     }
 
-    @GetMapping
-    public ResponseEntity<List<PetsResponse>> getAllPets() {
-        List<Pets> pets = petsService.getAllPets();
-        List<PetsResponse> petResponses = pets.stream()
-                .map(this::convertToResponse)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(petResponses);
+    private PetsResponse getPetResponse(Pets pet) {
+        // Assuming you have a method to retrieve adoption information for pets
+        List<AdoptedPets> adoptions = getAllAdoptionsByPetId(pet.getId());
+        // List<AdoptionResponse> adoptionInfo = adoptions
+        //         .stream()
+        //         .map(adoption -> new AdoptionResponse(adoption.getPetId(),
+        //                 adoption.getAdoptionDate(),
+        //                 adoption.getAdopterName(),
+        //                 adoption.getAdopterEmail(),
+        //                 adoption.getAdopterPhoneNo(),
+        //                 adoption.getConfirmationCode())).toList();
+    
+        // Encode photo bytes to Base64 if available
+        byte[] photoBytes = pet.getPhoto();
+    
+        return new PetsResponse(pet.getId(), pet.getAnimalType(), pet.getBreed(), pet.getGender(),
+                pet.getAge(), pet.getIsVaccinated(), pet.getIsAdopted(), photoBytes);
+        // return new PetsResponse(pet.getId(), pet.getAnimalType(), pet.getBreed(), pet.getGender(),
+        //         pet.getAge(), pet.getIsVaccinated(), pet.getIsAdopted(), photoBytes, adoptionInfo);
+    }
+    
+    
+
+
+    private List<AdoptedPets> getAllAdoptionsByPetId(Long roomId) {
+        return AdoptionService.getAllAdoptionsByPetId(roomId);
+
     }
 
     @PutMapping("/{id}")
@@ -80,10 +123,11 @@ public class PetController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deletePet(@PathVariable Long id) {
         petsService.deletePet(id);
-        return ResponseEntity.noContent().build();
+        // return ResponseEntity.noContent().build();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/animalType/{animalType}")

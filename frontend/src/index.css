@@ -75,7 +75,7 @@ body {
   .pet-color{
     color: rgb(169, 77, 123);
   }
-  .room-price{
+  .pet-price{
     color:darkgoldenrod;
     font-family: 'Courier New', Courier, monospace;
     font-size:medium;

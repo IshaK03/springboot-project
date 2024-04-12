@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { getPetsByAnimalType } from '../utils/ApiFunctions'
 import '../../index.css'
 import { getAllAnimalTypes } from '../utils/ApiFunctions';
 

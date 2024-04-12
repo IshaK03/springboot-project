@@ -40,12 +40,30 @@ export async function addPet(
   }
 }
 
+export async function getAllAnimalTypes() {
+  try {
+    const response = await api.get("/api/pets/animalTypes");
+    return response.data; // Array of all AnimalTypes
+  } catch (error) {
+    console.error("Error getting all AnimalTypes:", error);
+    return []; // Return empty array if error occurs
+  }
+}
 
+    export async function getAllBreeds() {
+  try {
+    const response = await api.get("/api/pets/breeds");
+    return response.data; // Array of all breeds
+  } catch (error) {
+    console.error("Error getting all breeds:", error);
+    return []; // Return empty array if error occurs
+  }
+}
 
 // Function to get all pets
 export async function getAllPets() {
   try {
-    const response = await api.get("/api/pets");
+    const response = await api.get("/api/pets/all-pets");
     return response.data; // Array of pets
   } catch (error) {
     console.error("Error getting pets:", error);
@@ -74,32 +92,12 @@ export async function getPetsByAnimalType(animalType) {
   }
 }
 
-export async function getAllAnimalTypes() {
-  try {
-    const response = await api.get("/api/pets/animalTypes");
-    return response.data; // Array of all AnimalTypes
-  } catch (error) {
-    console.error("Error getting all AnimalTypes:", error);
-    return []; // Return empty array if error occurs
-  }
-}
-
 export async function getPetsByBreed(breed) {
   try {
     const response = await api.get(`/api/pets/byBreed/${breed}`);
     return response.data; // Array of pets with the specified breed
   } catch (error) {
     console.error(`Error getting pets with breed ${breed}:`, error);
-    return []; // Return empty array if error occurs
-  }
-}
-
-export async function getAllBreeds() {
-  try {
-    const response = await api.get("/api/pets/breeds");
-    return response.data; // Array of all breeds
-  } catch (error) {
-    console.error("Error getting all breeds:", error);
     return []; // Return empty array if error occurs
   }
 }
@@ -138,16 +136,25 @@ export async function updatePet(
 }
 
 // Function to delete pet by ID
-export async function deletePet(id) {
-  try {
-    const response = await api.delete(`/api/pets/${id}`);
-    if (response.status === 204) {
-      return true; // Pet deleted successfully
-    } else {
-      return false; // Failed to delete pet
+// export async function deletePet(id) {
+//   try {
+//     const response = await api.delete(`/api/pets/${id}`);
+//     if (response.status === 204) { 
+//       return true; // Pet deleted successfully
+//     } else {
+//       return false; // Failed to delete pet
+//     }
+//   } catch (error) {
+//     console.error(`Error deleting pet with ID ${id}:`, error);
+//     return false; // Failed to delete pet
+//   }
+// }
+
+export async function deletePet(id){
+    try {
+        const result = await api.delete(`/api/pets/delete/${id}`);
+        return result.data
+    } catch (error) {
+        throw new Error(`Error deleting Pet ${error.message}`)
     }
-  } catch (error) {
-    console.error(`Error deleting pet with ID ${id}:`, error);
-    return false; // Failed to delete pet
-  }
 }

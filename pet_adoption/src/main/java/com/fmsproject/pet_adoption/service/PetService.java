@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +22,9 @@ public class PetService implements IPetService {
 
     @Override
     @Transactional
-    public Pets addPet(String animalType, String breed, String gender, Integer age, Integer isVaccinated, Integer isAdopted,
-                       MultipartFile photo) throws IOException {
+    public Pets addPet(String animalType, String breed, String gender, Integer age, Integer isVaccinated,
+            Integer isAdopted,
+            MultipartFile photo) throws IOException {
         Pets pet = new Pets();
         pet.setAnimalType(animalType);
         pet.setBreed(breed);
@@ -41,6 +44,16 @@ public class PetService implements IPetService {
     }
 
     @Override
+    public byte[] getPetPhotoByPetId(Long petId) throws SQLException {
+        Optional<Pets> thePet = petRepository.findById(petId);
+        if (thePet.isEmpty()) {
+            throw new ResourceNotFoundException("Sorry, Pet not found!");
+        }
+        byte[] photoBytes = thePet.get().getPhoto();
+        return photoBytes;
+    }
+
+    @Override
     public Pets getPetById(Long id) {
         return petRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Pet not found with ID: " + id));
@@ -48,8 +61,9 @@ public class PetService implements IPetService {
 
     @Override
     @Transactional
-    public Pets updatePet(Long id, String animalType, String breed, String gender, Integer age, Integer isVaccinated, Integer isAdopted,
-                          MultipartFile photo) throws IOException {
+    public Pets updatePet(Long id, String animalType, String breed, String gender, Integer age, Integer isVaccinated,
+            Integer isAdopted,
+            MultipartFile photo) throws IOException {
         Pets pet = getPetById(id);
         if (animalType != null) {
             pet.setAnimalType(animalType);
@@ -106,9 +120,4 @@ public class PetService implements IPetService {
         return petRepository.findAllBreeds();
     }
 
-    @Override
-    public byte[] getPetPhotoByPetId(Long petId) {
-        Pets pet = getPetById(petId);
-        return pet.getPhoto();
-    }
 }

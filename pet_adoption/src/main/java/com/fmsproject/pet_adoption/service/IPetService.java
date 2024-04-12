@@ -28,6 +28,7 @@ import com.fmsproject.pet_adoption.model.Pets;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface IPetService {
@@ -35,6 +36,8 @@ public interface IPetService {
     Pets addPet(String animalType, String breed, String gender, Integer age, Integer isVaccinated, Integer isAdopted, MultipartFile photo) throws IOException;
 
     List<Pets> getAllPets();
+
+    byte[] getPetPhotoByPetId(Long petId) throws SQLException;
 
     Pets getPetById(Long id);
 
@@ -50,5 +53,4 @@ public interface IPetService {
 
     List<String> getAllAnimalTypes();
 
-    byte[] getPetPhotoByPetId(Long petId);
 }
