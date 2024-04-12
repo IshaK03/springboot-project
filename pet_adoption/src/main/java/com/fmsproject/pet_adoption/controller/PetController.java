@@ -156,6 +156,18 @@ public class PetController {
         return ResponseEntity.ok(breeds);
     }
 
+    // private PetsResponse convertToResponse(Pets pet) {
+    //     PetsResponse response = new PetsResponse();
+    //     response.setId(pet.getId());
+    //     response.setAnimalType(pet.getAnimalType());
+    //     response.setBreed(pet.getBreed());
+    //     response.setGender(pet.getGender());
+    //     response.setAge(pet.getAge());
+    //     response.setIsVaccinated(pet.getIsVaccinated());
+    //     response.setIsAdopted(pet.getIsAdopted());
+    //     response.setPhoto(Base64.encodeBase64String(pet.getPhoto()));
+    //     return response;
+    // }
     private PetsResponse convertToResponse(Pets pet) {
         PetsResponse response = new PetsResponse();
         response.setId(pet.getId());
@@ -165,7 +177,8 @@ public class PetController {
         response.setAge(pet.getAge());
         response.setIsVaccinated(pet.getIsVaccinated());
         response.setIsAdopted(pet.getIsAdopted());
-        response.setPhoto(Base64.encodeBase64String(pet.getPhoto()));
+        response.setPhoto(pet.getPhoto() != null ? Base64.encodeBase64String(pet.getPhoto()) : "");
         return response;
     }
+    
 }

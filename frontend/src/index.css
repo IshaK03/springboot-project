@@ -12,6 +12,7 @@ body {
   opacity: 0.9;
 }
 
+
 /* Navigation bar definitions */
  .navbar{
   padding: 0;
@@ -29,7 +30,7 @@ body {
   left: 0;
   right: 0;
   content: '';
-  background-color:rgb(169, 77, 123) ;
+  background-color:rgb(169, 77, 123) !;
   width: 0;
   margin: 0 auto;
   height: 4px;
@@ -73,10 +74,10 @@ body {
   }
 
   .pet-color{
-    color: rgb(169, 77, 123);
+    color: rgb(169, 77, 123) !important; 
   }
   .pet-price{
-    color:darkgoldenrod;
+    color:darkgoldenrod !important;
     font-family: 'Courier New', Courier, monospace;
     font-size:medium;
   }
