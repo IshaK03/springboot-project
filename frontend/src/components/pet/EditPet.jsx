@@ -1,12 +1,15 @@
-import React, { useState } from "react";
-import { addPet } from "../utils/ApiFunctions";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom"; 
+import { useNavigate } from 'react-router-dom';
+import { getPetById, updatePet } from "../utils/ApiFunctions";
 import PetBreedSelector from "../common/PetBreedSelector";
 import PetAnimalTypeSelector from "../common/PetAnimalTypeSelector";
 import "../../index.css";
-import { Link } from "react-router-dom";
 
-const AddPet = () => {
-  const [newPet, setNewPet] = useState({
+const EditPet = () => {
+  const { id } = useParams();
+  const navigate = useNavigate(); // Initialize useHistory
+  const [pet, setPet] = useState({
     animalType: "",
     breed: "",
     gender: "",
@@ -15,19 +18,37 @@ const AddPet = () => {
     isAdopted: "",
     photo: null,
   });
-
   const [imagePreview, setImagePreview] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  useEffect(() => {
+    const fetchPet = async () => {
+        try {
+            const petData = await getPetById(id);
+            setPet({
+                ...petData,
+                isVaccinated: mapVaccinationStatus(petData.isVaccinated),
+                isAdopted: mapAdoptionStatus(petData.isAdopted),
+            });
+            setImagePreview(petData.photo ? `data:${petData.photoType};base64,${petData.photo}` : ""); // Use provided photo type
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    fetchPet();
+}, [id]);
+
+
+
   const handlePetInputChange = (e) => {
     const { name, value } = e.target;
-    setNewPet({ ...newPet, [name]: value });
+    setPet({ ...pet, [name]: value });
   };
 
   const handleImageChange = (e) => {
     const selectedImage = e.target.files[0];
-    setNewPet({ ...newPet, photo: selectedImage });
+    setPet({ ...pet, photo: selectedImage });
     setImagePreview(URL.createObjectURL(selectedImage));
   };
 
@@ -36,7 +57,7 @@ const AddPet = () => {
     try {
       // Mapping isVaccinated and isAdopted values to integers
       let isVaccinatedValue;
-      switch (newPet.isVaccinated) {
+      switch (pet.isVaccinated) {
         case "Not Vaccinated":
           isVaccinatedValue = 0;
           break;
@@ -51,7 +72,7 @@ const AddPet = () => {
       }
 
       let isAdoptedValue;
-      switch (newPet.isAdopted) {
+      switch (pet.isAdopted) {
         case "Not Adopted":
           isAdoptedValue = 0;
           break;
@@ -62,39 +83,51 @@ const AddPet = () => {
           isAdoptedValue = 0; // Default to 0 if none of the cases match
       }
 
-      const success = await addPet(
-        newPet.animalType,
-        newPet.breed,
-        newPet.gender,
-        newPet.age,
+      const success = await updatePet(
+        id,
+        pet.animalType,
+        pet.breed,
+        pet.gender,
+        pet.age,
         isVaccinatedValue,
         isAdoptedValue,
-        newPet.photo
+        pet.photo
       );
 
       if (success !== undefined) {
-        setSuccessMessage("A new pet was added to the database");
-        setNewPet({
-          photo: null,
-          animalType: "",
-          breed: "",
-          gender: "",
-          age: "",
-          isVaccinated: "Not Vaccinated", // Reset to default value
-          isAdopted: "Not Adopted", // Reset to default value
-        });
+        setSuccessMessage("Pet updated successfully!");
         setImagePreview("");
         setErrorMessage("");
       } else {
-        setErrorMessage("Error adding new pet");
+        setErrorMessage("Error updating pet");
       }
     } catch (error) {
       setErrorMessage(error.message);
     }
-    setTimeout(() => {
-      setErrorMessage("");
-      setSuccessMessage("");
-    }, 3000);
+  };
+
+  const mapVaccinationStatus = (status) => {
+    switch (status) {
+      case 0:
+        return "Not Vaccinated";
+      case 1:
+        return "Partially Vaccinated";
+      case 2:
+        return "Completely Vaccinated";
+      default:
+        return "";
+    }
+  };
+
+  const mapAdoptionStatus = (status) => {
+    switch (status) {
+      case 0:
+        return "Not Adopted";
+      case 1:
+        return "Adopted";
+      default:
+        return "";
+    }
   };
 
   return (
@@ -102,14 +135,16 @@ const AddPet = () => {
       <section className="container  mt-5 mb-5">
         <div className="row justify-content-center">
           <div className="col-md-8 col-lg-6 px-4 py-4 border border-white rounded-lg">
-            <h1 className="mb-2">Add New Pet</h1>
+            <h1 className="mb-2">Edit Pet</h1>
             {successMessage && (
               <div className="alert alert-success fade show">
                 {successMessage}
               </div>
             )}
             {errorMessage && (
-              <div className="alert alert-danger fade show">{errorMessage}</div>
+              <div className="alert alert-danger fade show">
+                {errorMessage}
+              </div>
             )}
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
@@ -118,7 +153,7 @@ const AddPet = () => {
                 </label>
                 <PetAnimalTypeSelector
                   handlePetInputChange={handlePetInputChange}
-                  newPet={newPet}
+                  newPet={pet}
                 />
               </div>
               <div className="mb-3">
@@ -127,7 +162,7 @@ const AddPet = () => {
                 </label>
                 <PetBreedSelector
                   handlePetInputChange={handlePetInputChange}
-                  newPet={newPet}
+                  newPet={pet}
                 />
               </div>
               <div className="mb-3">
@@ -139,7 +174,7 @@ const AddPet = () => {
                   required
                   type="text"
                   name="age"
-                  value={newPet.age}
+                  value={pet.age}
                   onChange={handlePetInputChange}
                   placeholder="Pet Age (in months)"
                 />
@@ -153,7 +188,7 @@ const AddPet = () => {
                   required
                   type="text"
                   name="gender"
-                  value={newPet.gender}
+                  value={pet.gender}
                   onChange={handlePetInputChange}
                   placeholder="Pet Gender"
                 />
@@ -165,7 +200,7 @@ const AddPet = () => {
                 <select
                   className="form-select"
                   name="isVaccinated"
-                  value={newPet.isVaccinated}
+                  value={pet.isVaccinated}
                   onChange={handlePetInputChange}
                   required
                 >
@@ -186,7 +221,7 @@ const AddPet = () => {
                 <select
                   className="form-select"
                   name="isAdopted"
-                  value={newPet.isAdopted}
+                  value={pet.isAdopted}
                   onChange={handlePetInputChange}
                   required
                 >
@@ -219,19 +254,12 @@ const AddPet = () => {
                   />
                 )}
               </div>
-              <div className="mb-2 row">
+              <div className="mb-3 row">
                 <div className="col-md-3">
-                  <Link
-                    to="/existing-pets"
-                    className="btn btn-primary form-control col-md-3"
-                  >
-                    Back
-                  </Link>
+                  <button className="btn btn-primary form-control" onClick={() => navigate("/existing-pets")}>Back</button>
                 </div>
                 <div className="col-md-9">
-                  <button className="btn btn-pet form-control col-md-6" type="submit">
-                    Save Pet
-                  </button>
+                  <button className="btn btn-pet form-control" type="submit">Save Pet</button>
                 </div>
               </div>
             </form>
@@ -242,4 +270,4 @@ const AddPet = () => {
   );
 };
 
-export default AddPet;
+export default EditPet;

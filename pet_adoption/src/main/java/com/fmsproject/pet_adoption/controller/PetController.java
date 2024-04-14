@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -76,7 +77,7 @@ public class PetController {
 
     private PetsResponse getPetResponse(Pets pet) {
         // Assuming you have a method to retrieve adoption information for pets
-        List<AdoptedPets> adoptions = getAllAdoptionsByPetId(pet.getId());
+        List<AdoptedPets> adoptions = getAllAdoptions();
         // List<AdoptionResponse> adoptionInfo = adoptions
         //         .stream()
         //         .map(adoption -> new AdoptionResponse(adoption.getPetId(),
@@ -98,8 +99,8 @@ public class PetController {
     
 
 
-    private List<AdoptedPets> getAllAdoptionsByPetId(Long roomId) {
-        return AdoptionService.getAllAdoptionsByPetId(roomId);
+    private List<AdoptedPets> getAllAdoptions() {
+        return adoptionService.getAllAdoptions();
 
     }
 

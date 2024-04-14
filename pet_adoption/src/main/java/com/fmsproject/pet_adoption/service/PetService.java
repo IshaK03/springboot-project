@@ -54,10 +54,11 @@ public class PetService implements IPetService {
     }
 
     @Override
-    public Pets getPetById(Long id) {
-        return petRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Pet not found with ID: " + id));
+    public Pets getPetById(Long petId) {
+        return petRepository.findById(petId).orElse(null);
     }
+    
+    
 
     @Override
     @Transactional

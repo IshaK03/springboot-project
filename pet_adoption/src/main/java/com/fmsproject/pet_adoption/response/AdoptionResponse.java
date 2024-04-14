@@ -6,12 +6,14 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+import com.fmsproject.pet_adoption.model.Pets;
+
 @Data
 // @AllArgsConstructor
 @NoArgsConstructor
 public class AdoptionResponse {
 
-    private Long petId;
+    private Long id;
 
     private LocalDate adoptionDate;
 
@@ -23,15 +25,15 @@ public class AdoptionResponse {
 
     private String confirmationCode;
 
-    // private PetsResponse pet; 
+    private Pets pet; 
 
-    public AdoptionResponse(Long petId, LocalDate adoptionDate, String adopterName, String adopterEmail, Long adopterPhoneNo, String confirmationCode) {
-        this.petId = petId;
-        this.adoptionDate = adoptionDate;
+    public AdoptionResponse(Long Id, String adopterName, String adopterEmail, Long adopterPhoneNo, String confirmationCode, LocalDate adoptionDate, Pets pet) {
+        this.id = Id;
         this.adopterName = adopterName;
         this.adopterEmail = adopterEmail;
         this.adopterPhoneNo = adopterPhoneNo;
         this.confirmationCode = confirmationCode;
-        // this.pet = pet;
+        this.adoptionDate = adoptionDate;
+        this.pet = pet;
     }
 }
