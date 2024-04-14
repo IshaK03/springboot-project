@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const ExistingPets = () => {
     const [pets, setPets] = useState([{ id: "", animalType: "", breed: "", gender: "", age: "", isVaccinated: "", isAdopted: "" }]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [petsPerPage] = useState(3);
+    const [petsPerPage] = useState(6);
     const [isLoading, setIsLoading] = useState(false);
     const [filteredPets, setFilteredPets] = useState([{ id: "", animalType: "", breed: "", gender: "", age: "", isVaccinated: "", isAdopted: "" }]);
     const [selectedPetType, setSelectedPetType] = useState("");

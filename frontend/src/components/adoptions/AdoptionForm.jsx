@@ -96,10 +96,10 @@ const AdoptionForm = ({ Id }) => {
                   required
                 />
               </Form.Group>
-              <Button className="mr-2" variant="primary" onClick={handleGenerateConfirmationCode}>
+              {/* <Button className="mr-2" variant="primary" onClick={handleGenerateConfirmationCode}>
                 Generate Confirmation Code
-              </Button>
-              <Button variant="primary" type="submit">
+              </Button> */}
+              <Button variant="primary" type="submit" className="mt-3">
                 Submit
               </Button>
               {errorMessage && (
