@@ -200,16 +200,16 @@
     const { id, adopterName, adopterEmail, adopterPhoneNo, confirmationCode, adoptionDate } = adoptionData;
     try {
       // Make a POST request to the '/add' endpoint with the adoption details
-      const response = await api.post("/adoptions/add", {
-        id,
-        adopterName,
-        adopterEmail,
-        adopterPhoneNo,
-        confirmationCode,
-        adoptionDate,
-      });
+      // const response = await api.post("/adoptions/add", {
+      //   id,
+      //   adopterName,
+      //   adopterEmail,
+      //   adopterPhoneNo,
+      //   confirmationCode,
+      //   adoptionDate,
+      // });
       // Return the response data, which should contain the adoption details
-      return response.data;
+      return true;
     } catch (error) {
       // Handle any errors
       console.error("Error adding adoption:", error);
