@@ -12,6 +12,8 @@ import PetListing from './components/pet/PetListing.jsx';
 import Admin from './components/admin/Admin.jsx';
 import Checkout from './components/adoptions/Checkout.jsx';
 import AdoptionSuccess from './components/adoptions/AdoptionSuccess.jsx';
+import AddFeedback from './components/feedback/AddFeedback.jsx';
+import FeedbackListing from './components/feedback/FeedbackListing.jsx';
 // import Navbar from './components/layout/Navbar.jsx';
 
 function App() {
@@ -26,7 +28,9 @@ function App() {
         <Route path="/existing-pets" element={<ExistingPets />} />
         <Route path="/add-pet" element={<AddPet />} />
         <Route path="/browse-all-pets" element={<PetListing />} />
+        <Route path="/browse-all-feedback" element={<FeedbackListing />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/add-feedback" element={<AddFeedback />} />
       </Routes>
       <Footer />
     </Router>

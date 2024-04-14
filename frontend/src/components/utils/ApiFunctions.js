@@ -265,3 +265,32 @@
       return false; // Failed to delete adoption
     }
   }
+
+  export async function addFeedback(name, email, phoneNumber, comment) {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("phoneNumber", phoneNumber);
+    formData.append("comment", comment);
+      try {
+      const response = await api.post("/feedbacks/add", formData);
+      if (response.status === 201) {
+        return true; // Pet added successfully
+      } else {
+        return false; // Failed to add pet
+      }
+    } catch (error) {
+      console.error("Error adding feedback:", error);
+      return false; // Failed to add pet
+    }
+  }
+
+  export async function getAllFeedback() {
+    try {
+      const response = await api.get("/feedbacks/all-feedback");
+      return response.data; // Array of pets
+    } catch (error) {
+      console.error("Error getting pets:", error);
+      return []; // Return empty array if error occurs
+    }
+  }
