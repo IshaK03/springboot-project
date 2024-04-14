@@ -46,10 +46,17 @@ const PetCarousel = () => {
     };
     
     return (
-        <section className="bg-dark mb-5 mt-5 shadow rounded p-2">
-            <Link to={"/browse-all-pets"} className="pet-color text-center">
-                Browse all pets
-            </Link>
+        <div>
+
+                <Link to={"/browse-all-pets"} className="btn btn-pet btn-sm mt-5 mb-3">
+                    Browse all Pets
+                </Link>
+                <Link to={"/existing-pets"} className="btn btn-pet btn-sm mt-5 mb-3 mx-2">
+                    Pet List
+                </Link>
+        
+        <section className="card-background mb-5 shadow rounded p-4">
+            
 
             <Container>
                 <Carousel indicators={false} >
@@ -57,8 +64,8 @@ const PetCarousel = () => {
                         <Carousel.Item key={index}>
                             <Row>
                                 {pets.slice(index * 4, index * 4 + 4).map((pet) => (
-                                    <Col key={pet.id} className="mb-4" xs={12} md={6} lg={3}>
-                                        <Card>
+                                    <Col key={pet.id} xs={12} md={6} lg={3}>
+                                        <Card className="carousel-card">
                                             <Link to={`/edit-pet/${pet.id}`}>
                                                 <Card.Img
                                                     variant="top"
@@ -73,7 +80,7 @@ const PetCarousel = () => {
                                                 <Card.Title className="pet-price">{pet.breed}</Card.Title>
                                                 <Card.Title className="pet-details">{getPetAge(pet.age)} </Card.Title>
                                                 <div className="flex-shrink-0">
-                                                    <Link to={`/edit-pet/${pet.id}`} className="btn btn-pet btn-sm">
+                                                    <Link to={`/existing-pets`} className="btn btn-pet btn-sm">
                                                         View Details
                                                     </Link>
                                                 </div>
@@ -87,6 +94,7 @@ const PetCarousel = () => {
                 </Carousel>
             </Container>
         </section>
+        </div>
     );
 };
 

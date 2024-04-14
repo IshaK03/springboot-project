@@ -36,8 +36,8 @@ const PetCard = ({ pet }) => {
 	return (
 		<Col key={pet.id} className="mb-4" xs={12}>
 			<Card>
-				<Card.Body className="d-flex flex-wrap align-items-center">
-					<div className="flex-shrrink-0 mr-3 mb-3 mb-md-0">
+				<Card.Body className="d-flex flex-wrap align-items-center card-background rounded">
+					<div className="flex-shrink-0 mr-3 mb-3 mb-md-0">
 						<Link to={`/adopt-pet/${pet.id}`}>
 							<Card.Img
 								variant="top"
@@ -52,7 +52,7 @@ const PetCard = ({ pet }) => {
 							/>
 						</Link>
 					</div>
-					<div className="flex-grow-1 ml-3 px-5">
+					<div className="flex-grow-1 ml-3 px-5 text-white">
 						<Card.Title className="pet-color">{pet.animalType}</Card.Title>
 						<Card.Text>{pet.breed}</Card.Text>
 						<Card.Text>Gender: {pet.gender}</Card.Text>

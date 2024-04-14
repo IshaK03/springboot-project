@@ -13,7 +13,7 @@ const PetPaginator = ({ currentPage, totalPages, onPageChange }) => {
                         key={pageNumber}
                         className={`page-item ${currentPage === pageNumber ? "active" : ""}`}
                     >
-                        <button onClick={() => onPageChange(pageNumber)} className="page-link">
+                        <button onClick={() => onPageChange(pageNumber)} className="page-link bg-black">
                             {pageNumber}
                         </button>
                     </li>

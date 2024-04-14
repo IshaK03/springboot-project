@@ -11,8 +11,8 @@ const Home = () => {
       <section className='container'>
         <PetCarousel />
         <FeedbackCarousel />
-        <Parallax />
       </section>
+      <Parallax />
     </section>
   )
 }

@@ -29,10 +29,18 @@ const FeedbackCarousel = () => {
     }
     
     return (
-        <section className="bg-dark mb-5 mt-5 shadow rounded p-2">
-            <Link to={"/view-all-feedback"} className="text-center text-light">
+        <div>
+
+                <Link to={"/browse-all-feedback"} className="btn btn-pet btn-sm mt-3 mb-2">
+                    Browse all Feedback
+                </Link>
+                <Link to={"/add-feedback"} className="btn btn-pet btn-sm mt-3 mb-2 mx-2">
+                    Add Feedback
+                </Link>
+        <section className="mb-5 shadow rounded p-4 card-background">
+            {/* <Link to={"/browse-all-feedback"} className="pet-color px-3">
                 View all feedback
-            </Link>
+            </Link> */}
 
             <Container>
                 <Carousel indicators={false} >
@@ -40,10 +48,10 @@ const FeedbackCarousel = () => {
                         <Carousel.Item key={index}>
                             <Row>
                                 {feedbacks.slice(index * 4, index * 4 + 4).map((feedback, feedbackIndex) => (
-                                    <Col key={feedbackIndex} className="mb-4" xs={12} md={6} lg={3}>
-                                        <Card>
+                                    <Col key={feedbackIndex} xs={12} md={6} lg={3}>
+                                        <Card className="carousel-card">
                                             <Card.Body>
-                                                <Card.Title className="text-center">{feedback.name}</Card.Title>
+                                                <Card.Title className="text-center pet-price">{feedback.name}</Card.Title>
                                                 <Card.Text className="text-center">{feedback.comment}</Card.Text>
                                             </Card.Body>
                                         </Card>
@@ -55,6 +63,7 @@ const FeedbackCarousel = () => {
                 </Carousel>
             </Container>
         </section>
+        </div>
     );
 };
 

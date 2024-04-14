@@ -5,12 +5,13 @@ import '../../index.css'
 const Parallax = () => {
 	return (
 		<div className="parallax mb-5">
-			<Container className="text-center px-5 py-5 justify-content-center">
+			<Container className="text-start justify-content-center">
 				<div className="animated-texts bounceIn">
 					<h1>
-						Find yourself a friend who will love you unconditionally, at <span className="pet-color">Re-Paw-Sitory</span>
+						Find yourself a friend who will <br/> love you unconditionally, <br/>at <span className="pet-color">Re-Paw-Sitory</span>
 					</h1>
-					<h3>Help find a permanent home for these munchkins &lt;3</h3>
+					<br/>
+					<h3>Help find a permanent home <br/> for these munchkins &lt;3</h3>
 				</div>
 			</Container>
 		</div>

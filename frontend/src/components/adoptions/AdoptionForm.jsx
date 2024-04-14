@@ -99,7 +99,7 @@ const AdoptionForm = ({ Id }) => {
               {/* <Button className="mr-2" variant="primary" onClick={handleGenerateConfirmationCode}>
                 Generate Confirmation Code
               </Button> */}
-              <Button variant="primary" type="submit" className="mt-3">
+              <Button variant="primary" type="submit" className="mt-3 btn-pet">
                 Submit
               </Button>
               {errorMessage && (

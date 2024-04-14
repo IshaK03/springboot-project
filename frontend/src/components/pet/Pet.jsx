@@ -67,7 +67,7 @@ const Pet = () => {
             </Row>
 
             <Row>{renderPets()}</Row>
-
+{/* 
             <Row className="mb-5">
                 <Col md={6} className="d-flex align-items-center justify-content-end">
                     <PetPaginator
@@ -76,7 +76,7 @@ const Pet = () => {
                         onPageChange={handlePageChange}
                     />
                 </Col>
-            </Row>
+            </Row> */}
         </Container>
     );
 };
