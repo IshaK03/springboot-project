@@ -54,26 +54,12 @@ public class AdoptionController {
 
         // Fetch the Pets entity using the petId from the adoptionRequest
         System.out.println("ID before findById: " + petId);
-        // Pets pet = petService.getPetById(petId);
-        // if (pet == null) {
-        // throw new ResourceNotFoundException("Pet with id " + petId + " not found");
-        // }
-
-        Pets pet = null;
-        try {
-            // Fetch the Pets entity using the petId from the adoptionRequest
-            System.out.println("ID before findById: " + petId);
-            pet = petService.getPetById(petId);
-            if (pet == null) {
-                throw new ResourceNotFoundException("Pet with id " + petId + " not found");
-            }
-        } catch (Exception e) {
-            // Log the exception for debugging purposes
-            e.printStackTrace();
-            // Return a specific error response to the client
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("An error occurred while fetching the pet with ID: " + petId);
+        Pets pet = petService.getPetById(petId);
+        if (pet == null) {
+        throw new ResourceNotFoundException("Pet with id " + petId + " not found");
         }
+
+    
         // Create an AdoptedPets object with the parameters received
         AdoptedPets adoptedPet = new AdoptedPets();
         adoptedPet.setAdopterName(adopterName);
